@@ -17,12 +17,13 @@ export default function App() {
     <Wrapper className="App">
       <Background />
       <TextSection />
-      <Canvas clasName="canvas">
+      <Canvas clasName="canvas" dpr={window.devicePixelRatio}>
         <OrbitControls enableZoom={true} />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.25} />
         <directionalLight position={[-2, 5, 2]} />
         <Suspense fallback={null}>
-          <Box />
+          <Box position={[0,0,0]} />
+          <Box position={[500,500,500]} />
         </Suspense>
       </Canvas>
 
@@ -33,6 +34,7 @@ export default function App() {
           <AnimatedSphere />
         </Suspense>
       </Canvas>
+
 
     </Wrapper>
   );
