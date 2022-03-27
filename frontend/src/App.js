@@ -11,6 +11,7 @@ import TextSection from "./components/TextSection";
 import Box from "./components/Box";
 import AnimatedSphere from "./components/AnimatedSphere";
 import Iphone from "./components/Iphone";
+import Plane from "./components/PlaneTest";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         </Suspense>
       </Canvas>
 
+      <Plane/>
 
     </Wrapper>
   );
