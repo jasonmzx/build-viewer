@@ -12,34 +12,23 @@ import Box from "./components/Box";
 import AnimatedSphere from "./components/AnimatedSphere";
 import Iphone from "./components/Iphone";
 import Plane from "./components/PlaneTest";
+import View from "./components/View.js";
+import Home from "./components/Home.js";
+import Upload from "./components/Upload.js"
+
+import React, { Fragment } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 export default function App() {
   return (
-    <Wrapper className="App">
-      <Background />
-      <TextSection />
-      <Canvas clasName="canvas" dpr={window.devicePixelRatio}>
-        <OrbitControls enableZoom={true} />
-        <ambientLight intensity={0.25} />
-        <directionalLight position={[-2, 5, 2]} />
-        <Suspense fallback={null}>
-          <Box position={[0,0,0]} />
-          <Box position={[500,500,500]} />
-        </Suspense>
-      </Canvas>
-
-      <Canvas clasName="canvas">
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[-2, 5, 2]} />
-        <Suspense fallback={null}>
-          <AnimatedSphere />
-        </Suspense>
-      </Canvas>
-
-      <Plane/>
-
-    </Wrapper>
-  );
+    <Router> 
+      <Routes>
+      <Route path="/" element={<Home/>}></Route>
+      <Route path="/view" element={<View/>} />
+      <Route path="/upload" element={<Upload/>}/>
+      </Routes>
+ </Router>
+   );
 }
 
 const Wrapper = styled.div`
