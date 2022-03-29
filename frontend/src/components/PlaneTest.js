@@ -1,17 +1,23 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader} from "@react-three/fiber";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three'
 import { DoubleSide } from "three";
+import { Suspense } from "react";
+import React from "react";
+import texture from '../images/stone.png';
 
 export default function Plane() {
+
    return (
       <Canvas>
+             <Suspense fallback={null}>
         <OrbitControls enableZoom={true} />
          <ambientLight />
          <mesh position={[3, 0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
 
       <planeBufferGeometry />
-      <meshBasicMaterial color="green" side={DoubleSide} />
+      <meshBasicMaterial attach="material" color="green" side={DoubleSide} />
     </mesh>
 
          <mesh>
@@ -24,6 +30,7 @@ export default function Plane() {
    />
 
          </mesh>
+         </Suspense>
       </Canvas>
    );
 }

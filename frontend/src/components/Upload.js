@@ -9,24 +9,59 @@ const Upload = () => {
     //     console.log('Success!');
     // }
 
+    function blockStructure(palette, pValue){
+      const BlockType = palette[pValue];
+
+      if(BlockType.Properties){
+
+        return {
+          'name' : BlockType.Name.value,
+          'cube' : false,
+          'special' : BlockType.Properties.value
+        };
+
+      } else {
+
+        return {
+          'name' : BlockType.Name.value,
+          'cube' : true
+        };
+
+      }
+    }
+
+    function findBlock(x,y,z,data,palette){
+      //console.log(data[0].pos.value.value);
+      for(const [i, v] of data.entries()){
+        const BlockArray = data[i].pos.value.value;
+        if(BlockArray[0] == x && BlockArray[1] == y && BlockArray[2] == z){
+          return blockStructure(palette,data[i].state.value);
+        }
+      }
+
+    }
+
+
     function parseNBT(input) {
       console.log('Parsing...');
+
       let dump = {
         author: "",
         dimension: {x:0,y:0,z:0}, 
-        blocks: [ //blocks[x][y][z]
-       //   [ [ [] /*z*/ ] /*y*/  ] /*x*/
-        ]
+        blocks: [] //blocks[x][y][z]
       }
-
-    //  console.log(input['value']['blocks']['value']['value']) //Block Array
 
       // const BlockList = input.value.blocks.value.value;
       // BlockPositionArray = input.value.blocks.value.value.pos.value.value;
 
+      //Block palette:
+      let palette = input.value.palette.value.value;
+      console.log(palette);
 
       //First Pass
       for(const block of input.value.blocks.value.value){ 
+
+        console.log(block);
 
         //The [ x, y, z ] Array
         var blockArray = block.pos.value.value;
@@ -48,6 +83,7 @@ const Upload = () => {
 
       console.log(dump.dimension)
 
+      //Generating 3d Array Structure: 
 
       for(let x_i = 0; x_i < dump.dimension.x; x_i++ ){
 
@@ -60,11 +96,8 @@ const Upload = () => {
 
             //Generate z indexes within y indexes
             for(let z_i = 0; z_i < dump.dimension.z; z_i++){
-              dump.blocks[x_i][y_i].push({ //Object
-                'name' : '0',
-                'isBlock' : true,
-                'direction': null
-              }
+              dump.blocks[x_i][y_i].push(
+              findBlock(x_i,y_i,z_i,input.value.blocks.value.value,palette)
               );
 
             }
