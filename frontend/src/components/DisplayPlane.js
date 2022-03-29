@@ -8,21 +8,22 @@ import React from "react";
 import texture from '../images/stone.png';
 
 
-export default function TexturePlane(props) {
+export default function DisplayPlane(props) {
 
 
 
     const colorMap = useLoader(TextureLoader, texture);
-    colorMap.minFilter = THREE.NearestFilter;
-    colorMap.magFilter = THREE.NearestFilter;
+    //Texture interpolation:
+    // colorMap.minFilter = THREE.NearestFilter;
+    // colorMap.magFilter = THREE.NearestFilter;
 
   //[Math.PI / 2, 0, 0] Flat plane facing up
 
    return (
-     <mesh position={[props.x, props.y, props.z]} rotation={props.rot} scale={[6, 6, 6]} castShadow receiveShadow>
+     <mesh position={[0,0,0]} rotation={[Math.PI / 2, 0, 0]} scale={[30, 30, 30]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="gray" side={DoubleSide} map={colorMap} />
+      <meshStandardMaterial attach="material" color="red" side={DoubleSide} map={colorMap} />
     </mesh>
    );
 }
