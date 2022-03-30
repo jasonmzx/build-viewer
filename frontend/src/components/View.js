@@ -11,7 +11,10 @@ import DisplayPlane from './DisplayPlane';
 
 softShadows()
 
-const View = () => {
+const View = (props) => {
+
+  let top = props.top;
+
   return (
 
 <Container>
@@ -38,41 +41,11 @@ const View = () => {
     {/*Generate scene here: */}
     {/*bottom: */}
 
-    <TexturePlane x={0} y={0} z={0} rot={[Math.PI / 2, 0, 0]} />
-    <TexturePlane x={0} y={0} z={6} rot={[Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={6} y={0} z={0} rot={[Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={12} y={0} z={0} rot={[Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={12} y={0} z={6} rot={[Math.PI / 2, 0, 0]}/>
-
+    {top}
 
     {/* top */}
 
-    <TexturePlane x={0} y={6} z={0} rot={[-Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={0} y={6} z={6} rot={[-Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={6} y={6} z={0} rot={[-Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={12} y={6} z={0} rot={[-Math.PI / 2, 0, 0]}/>
-    <TexturePlane x={12} y={6} z={6} rot={[-Math.PI / 2, 0, 0]}/>
 
-
-    <TexturePlane x={0} y={3} z={-3} rot={[0, 0, 0]}/>
-    <TexturePlane x={6} y={3} z={-3} rot={[0, 0, 0]}/>
-    <TexturePlane x={12} y={3} z={-3} rot={[0, 0, 0]}/>
-
-    <TexturePlane x={-3} y={3} z={0} rot={[0, Math.PI/2, 0]}/>
-    <TexturePlane x={-3} y={3} z={6} rot={[0, Math.PI/2, 0]}/>
-
-    <TexturePlane x={15} y={3} z={0} rot={[0, -Math.PI/2, 0]}/>
-    <TexturePlane x={15} y={3} z={6} rot={[0, -Math.PI/2, 0]}/>
-
-    {/*Outer planes in complex view */}
-    <TexturePlane x={6} y={3} z={3} rot={[0, 0, 0]}/>
-    <TexturePlane x={0} y={3} z={9} rot={[0, 0, 0]}/>
-    <TexturePlane x={12} y={3} z={9} rot={[0, 0, 0]}/>
-    <TexturePlane x={6} y={9} z={3} rot={[0, 0, 0]}/>
-
-    {/*inner planes in complex view */}
-    <TexturePlane x={3} y={3} z={6} rot={[0, Math.PI/2, 0]}/>
-    <TexturePlane x={9} y={3} z={6} rot={[0, Math.PI/2, 0]}/>
     <DisplayPlane/>
 
     </Suspense>

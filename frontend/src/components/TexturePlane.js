@@ -5,13 +5,13 @@ import * as THREE from 'three'
 import { DoubleSide } from "three";
 import { Suspense } from "react";
 import React from "react";
-import texture from '../images/stone.png';
+import texture from '../images/blocks/sandstone_top.png';
 
 
 export default function TexturePlane(props) {
 
 
-
+  
     const colorMap = useLoader(TextureLoader, texture);
     colorMap.minFilter = THREE.NearestFilter;
     colorMap.magFilter = THREE.NearestFilter;
@@ -22,7 +22,7 @@ export default function TexturePlane(props) {
      <mesh position={[props.x, props.y, props.z]} rotation={props.rot} scale={[6, 6, 6]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="gray" side={DoubleSide} map={colorMap} />
+      <meshStandardMaterial attach="material" color="gray" map={colorMap} />
     </mesh>
    );
 }

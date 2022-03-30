@@ -10,7 +10,17 @@ import texture from '../images/stone.png';
 
 export default function DisplayPlane(props) {
 
-
+    // const getTexture = () => {
+    //     fetch("http://localhost:5000/texture/stone")
+    //     .then(res => res.json())
+    //     .then(
+    //       (result) => {
+    //         console.log('Sucess!');
+    //       },(error) => {
+    //         console.log(error);
+    //       }
+    //     )
+    // }
 
     const colorMap = useLoader(TextureLoader, texture);
     //Texture interpolation:
@@ -23,7 +33,7 @@ export default function DisplayPlane(props) {
      <mesh position={[0,0,0]} rotation={[Math.PI / 2, 0, 0]} scale={[30, 30, 30]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="red" side={DoubleSide} map={colorMap} />
+      <meshStandardMaterial attach="material" color="purple" side={DoubleSide} map={colorMap} />
     </mesh>
    );
 }
