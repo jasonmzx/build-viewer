@@ -19,10 +19,10 @@ export default function TexturePlane(props) {
   //[Math.PI / 2, 0, 0] Flat plane facing up
 
    return (
-     <mesh position={[props.x, props.y, props.z]} rotation={props.rot} scale={[6, 6, 6]} castShadow receiveShadow>
+     <mesh position={[props.x, props.y, props.z]} rotation={props.rot} scale={[1, 1, 1]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="gray" map={colorMap} />
+      <meshStandardMaterial attach="material" color="gray" map={colorMap} side={DoubleSide} />
     </mesh>
    );
 }

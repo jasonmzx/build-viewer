@@ -7,16 +7,17 @@ import TexturePlane from './TexturePlane';
 
 const Upload = () => {
     const [scene , setScene] = React.useState([]);
+    const [planeList, setPlanes] = React.useState({
+      'planes' : []
+    });
 
     // handleUpload = (event) => {
     //     console.log('Success!');
     // }
 
-    let blockState = [<TexturePlane x={3} y={3} z={0} rot={[-Math.PI / 2, 0, 0]}/>];
-
-    function renderHandler(s){
+    function renderHandler(){
       console.log('[RENDER] calling...')
-      console.log(s);
+      console.log(scene);
 
       if(scene.length == 0){
         console.log('[RENDER] Denied!')
@@ -28,11 +29,9 @@ const Upload = () => {
       } else {
         console.log('[RENDER] Working...')
         console.log('[RENDER] Received planes:');
-        console.log(blockState);
-        console.log(typeof scene);
 
         return (
-          <View top={blockState}/>
+          <View top={scene}/>
         )
       }
     }
@@ -132,7 +131,7 @@ const Upload = () => {
               dump.blocks[x_i][y_i].push(
               findBlock(x_i,y_i,z_i,input.value.blocks.value.value,palette)
               );
-
+              console.log('generating 3d arr')
             }
 
         }
@@ -144,12 +143,16 @@ const Upload = () => {
       console.log(' 3D structure: ')
       console.log(dump.blocks)
 
+
+      let sceneParse = [];
+
       //Generate planes:
       for(const [xIter, xVal] of dump.blocks.entries()) {
         console.log(xIter); //Console logs all x arrays
         for(const [yIter,yVal] of xVal.entries()){
           console.log(yIter);
             for(const [zIter, zVal] of yVal.entries()){
+              console.log(zVal);
         //This will be the logic for rendering:
         
         //Surrounding block coord differences: xyz 012
@@ -157,16 +160,19 @@ const Upload = () => {
 
         console.log('viewing: ');
         console.log(zVal.name + "@"+xIter+' '+yIter+' '+zIter);
+        
+        if(!zVal.name){continue;}
 
           for(let k = 0; k < surround.length; k++){
             //do something
             
             if(surround[k][0] == 0 ){ //Looking at x
+
               let compare = '';
               try {
                 compare = dump.blocks[ xIter+surround[k][1] ][yIter][zIter];
               } catch(error){
-                console.log('Render NULL');
+                console.log('Render NULL X');
               }
 
               if(!compare || compare.cube == false ){
@@ -175,11 +181,49 @@ const Upload = () => {
                 //   <TexturePlane x={xIter} y={yIter} z={zIter} rot={[0, Math.PI / 2, 0]}/>
                 // );
                 // console.log('Rendering x @'+surround[k][1]+ ' x'+xIter+' y'+yIter+' z'+zIter);
-
-              }
+                sceneParse.push(
+                  (surround[k][1] > 0) ? 
+                  <TexturePlane x={xIter-1} y={yIter+0.5} z={zIter} rot={[0, -Math.PI / 2, 0]}/>
+                  : <TexturePlane x={xIter} y={yIter+0.5} z={zIter} rot={[0, Math.PI / 2, 0]}/>
+                )
+              } 
             }
             
+            if(surround[k][0] == 1){
+              let compare = '';
+              try {
+                compare = dump.blocks[xIter][yIter+surround[k][1]][zIter];
+              } catch(error){
+                console.log('Render NULL Y');
+              }
+
+              if(!compare || compare.cube == false){
+                sceneParse.push(
+                  (surround[k][1] > 0) ? 
+                  <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter-0.5} rot={[0,0, -Math.PI/2]}/>
+                  : <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter+0.5} rot={[0, 0, Math.PI / 2]}/>
+                )
+              }
+
+            }
             
+            if(surround[k][0] == 2){
+              let compare = '';
+              try {
+                compare = dump.blocks[xIter][yIter][zIter+surround[k][1]];
+              } catch(error){
+                console.log('Render NULL Z');
+              }
+
+              if(!compare || compare.cube == false){
+                sceneParse.push(
+                  (surround[k][1] > 0) ? 
+                  <TexturePlane x={xIter-0.5} y={yIter+1} z={zIter} rot={[Math.PI / 2, 0, 0]}/>
+                  : <TexturePlane x={xIter-0.5} y={yIter} z={zIter} rot={[-Math.PI / 2, 0, 0]}/>
+                )
+              }
+
+            }
 
 
 
@@ -190,21 +234,17 @@ const Upload = () => {
         }
 
       }
-
+      console.log('# of Planes:');
+      console.log(sceneParse.length);
+      console.log('\n');
+      setScene(sceneParse);
 
       // for(const block of input.value.blocks.value.value){
       //   console.log(block.pos.value.value);
       //   console.log(block.state.value);
       // }
-      blockState.push(<TexturePlane x={3} y={3} z={0} rot={[-Math.PI / 2, 0, 0]}/>);
-      setScene(scene.push('1'));
-      setScene(scene.push('2'));
-      console.log('scene:');
-      console.log(typeof scene);
-      console.log(scene);
-      console.log('\n+blockState:');
-      console.log(typeof blockState);
-      console.log(blockState)
+
+      //setScene([<TexturePlane x={3} y={3} z={0} rot={[-Math.PI / 2, 0, 0]}/>]);
 
 
 
@@ -237,7 +277,7 @@ const Upload = () => {
     <Container>
     Input NBT file <br/>
     <input type="file" onChange={handleChange}></input>
-    {renderHandler(scene)}
+    {renderHandler()}
     </Container>
   )
 }
