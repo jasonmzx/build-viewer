@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import { DoubleSide } from "three";
 import { Suspense } from "react";
 import React from "react";
-import texture from '../images/blocks/sandstone_top.png';
+import texture from '../images/blocks/stone_bricks.png';
 
 
 export default function TexturePlane(props) {
@@ -22,7 +22,7 @@ export default function TexturePlane(props) {
      <mesh position={[props.x, props.y, props.z]} rotation={props.rot} scale={[1, 1, 1]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="gray" map={colorMap} side={DoubleSide} />
+      <meshStandardMaterial attach="material" color={props.col} map={colorMap} />
     </mesh>
    );
 }

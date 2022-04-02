@@ -7,9 +7,6 @@ import TexturePlane from './TexturePlane';
 
 const Upload = () => {
     const [scene , setScene] = React.useState([]);
-    const [planeList, setPlanes] = React.useState({
-      'planes' : []
-    });
 
     // handleUpload = (event) => {
     //     console.log('Success!');
@@ -183,13 +180,13 @@ const Upload = () => {
                 // console.log('Rendering x @'+surround[k][1]+ ' x'+xIter+' y'+yIter+' z'+zIter);
                 sceneParse.push(
                   (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter-1} y={yIter+0.5} z={zIter} rot={[0, -Math.PI / 2, 0]}/>
-                  : <TexturePlane x={xIter} y={yIter+0.5} z={zIter} rot={[0, Math.PI / 2, 0]}/>
+                  <TexturePlane x={xIter} y={yIter+0.5} z={zIter} col={"red"} rot={[0, Math.PI / 2, 0]}/>
+                  : <TexturePlane x={xIter-1} y={yIter+0.5} z={zIter} col={"pink"} rot={[0, -Math.PI / 2, 0]}/>
                 )
               } 
             }
             
-            if(surround[k][0] == 1){
+            if(surround[k][0] == 2){
               let compare = '';
               try {
                 compare = dump.blocks[xIter][yIter+surround[k][1]][zIter];
@@ -200,14 +197,14 @@ const Upload = () => {
               if(!compare || compare.cube == false){
                 sceneParse.push(
                   (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter-0.5} rot={[0,0, -Math.PI/2]}/>
-                  : <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter+0.5} rot={[0, 0, Math.PI / 2]}/>
+                  <TexturePlane x={xIter-0.5} y={yIter} z={zIter} col={"green"} rot={[Math.PI/2,0, 0]}/>
+                  : <TexturePlane x={xIter-0.5} y={yIter+1} z={zIter} col={"blue"} rot={[-Math.PI/2, 0, 0]}/>
                 )
               }
 
             }
             
-            if(surround[k][0] == 2){
+            if(surround[k][0] == 1){
               let compare = '';
               try {
                 compare = dump.blocks[xIter][yIter][zIter+surround[k][1]];
@@ -218,8 +215,8 @@ const Upload = () => {
               if(!compare || compare.cube == false){
                 sceneParse.push(
                   (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter-0.5} y={yIter+1} z={zIter} rot={[Math.PI / 2, 0, 0]}/>
-                  : <TexturePlane x={xIter-0.5} y={yIter} z={zIter} rot={[-Math.PI / 2, 0, 0]}/>
+                  <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter+0.5} col={"purple"} rot={[0, 0, Math.PI / 2]}/>
+                  : <TexturePlane x={xIter-0.5} y={yIter} z={zIter+1} col={"cyan"} rot={[Math.PI / 2, 0, 0]}/>
                 )
               }
 

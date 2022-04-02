@@ -28,9 +28,9 @@ const View = (props) => {
   shadow-mapSize-width={1024}
   shadow-mapSize-height={1024}
   shadow-camera-far={100}
-  shadow-camera-left={-10}
-  shadow-camera-right={10}
-  shadow-camera-top={10}
+  shadow-camera-left={-15}
+  shadow-camera-right={15}
+  shadow-camera-top={20}
   shadow-camera-bottom={-10}
 
   />

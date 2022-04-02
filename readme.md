@@ -12,3 +12,4 @@ Facing down Rotation: [Math.PI / 2, 0, 0] (y-1)
 Facing viewer: [0, 0, -Math.PI / 2] (y-1)
  Facing 180deg: [0, 0, Math.PI / 2] (y+1)
 
+https://github.com/jwtea/three-viewer/blob/20744c53faf7ece7ee1bd19bc593a6322f39d002/components/Shapes/Points.jsx#L7
