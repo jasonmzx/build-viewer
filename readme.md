@@ -13,3 +13,7 @@ Facing viewer: [0, 0, -Math.PI / 2] (y-1)
  Facing 180deg: [0, 0, Math.PI / 2] (y+1)
 
 https://github.com/jwtea/three-viewer/blob/20744c53faf7ece7ee1bd19bc593a6322f39d002/components/Shapes/Points.jsx#L7
+
+Cool codepen:
+
+https://codesandbox.io/s/czhxx?file=/src/App.js (r3f)

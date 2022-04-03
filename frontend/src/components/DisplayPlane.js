@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import { DoubleSide } from "three";
 import { Suspense } from "react";
 import React from "react";
-import texture from '../images/stone.png';
+import texture from '../images/blocks/gold_block.png';
 
 
 export default function DisplayPlane(props) {
@@ -23,17 +23,15 @@ export default function DisplayPlane(props) {
     // }
 
     const colorMap = useLoader(TextureLoader, texture);
-    //Texture interpolation:
-    // colorMap.minFilter = THREE.NearestFilter;
-    // colorMap.magFilter = THREE.NearestFilter;
+    colorMap.minFilter = THREE.NearestFilter;
+    colorMap.magFilter = THREE.NearestFilter;
 
-  //[Math.PI / 2, 0, 0] Flat plane facing up
 
    return (
      <mesh position={[0,0,0]} rotation={[Math.PI / 2, 0, 0]} scale={[30, 30, 30]} castShadow receiveShadow>
 
       <planeBufferGeometry />
-      <meshStandardMaterial attach="material" color="purple" side={DoubleSide} map={colorMap} />
+      <meshStandardMaterial attach="material" color="gray" side={DoubleSide} map={colorMap} />
     </mesh>
    );
 }
