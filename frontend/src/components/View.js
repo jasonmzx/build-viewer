@@ -24,7 +24,7 @@ const View = (props) => {
   -30.0,  30.0, 0.0,
   30.0,  30.0, 0.0,
   30.0, -30.0, 0.0,
-  -30.0, -30.0, 0.0
+  -30.0, -30.0, 0.0,
   ];
   
   var quad_uvs =
@@ -41,7 +41,7 @@ const View = (props) => {
   0, 2, 1, 0, 3, 2
   ];
 
-  var geometry = new THREE.BufferGeometry();
+var geometry = new THREE.BufferGeometry();
 
 var vertices = new Float32Array( quad_vertices );
 // Each vertex has one uv coordinate for texture mapping

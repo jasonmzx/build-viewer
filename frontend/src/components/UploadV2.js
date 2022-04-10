@@ -59,16 +59,16 @@ const Upload = () => {
       }
     }
 
-    function findBlock(x,y,z,data,palette){
-      //console.log(data[0].pos.value.value);
-      for(const [i, v] of data.entries()){
-        const BlockArray = data[i].pos.value.value;
-        if(BlockArray[0] == x && BlockArray[1] == y && BlockArray[2] == z){
-          return blockStructure(palette,data[i].state.value);
-        }
-      }
+    function findBlockIndex(start, end, dimension) {
+      return (
+        (end[2]-start[2]) * (dimension.x+1) + 
+        -1*(end[1]-start[1]) * (dimension.x+1) * (dimension.z+1) +
+        (end[0]-start[0])
+      );
 
-    }
+
+
+    } 
 
 
     function parseNBT(input) {
@@ -80,18 +80,10 @@ const Upload = () => {
         blocks: [] //blocks[x][y][z]
       }
 
-      // const BlockList = input.value.blocks.value.value;
-      // BlockPositionArray = input.value.blocks.value.value.pos.value.value;
+      let blocks = input.value.blocks.value.value;
 
-      //Block palette:
-      let palette = input.value.palette.value.value;
-      console.log(palette);
-
-      //First Pass
-      for(const block of input.value.blocks.value.value){ 
-
-        console.log(block);
-
+      //First Pass (Grabs dimension of model in blocks)
+      for(const block of blocks){ 
         //The [ x, y, z ] Array
         var blockArray = block.pos.value.value;
 
@@ -108,155 +100,37 @@ const Upload = () => {
         }
 
       }
-      dump.dimension.x++; dump.dimension.y++; dump.dimension.z++; //( +1 to each axis after loop )
 
-      console.log(dump.dimension)
+      //Dimensions found:
+      console.log(dump.dimension);
 
-      //Generating 3d Array Structure: 
 
-      for(let x_i = 0; x_i < dump.dimension.x; x_i++ ){
+      //Sorts the blocks object a lil nicer
+      blocks.sort(
+        (a,b) => {
+          return b.pos.value.value[1] - a.pos.value.value[1]
+        });
 
-        //Generate all x indexes
-        dump.blocks.push([]);
+        console.log(
+          findBlockIndex([7,9,13] , [14,10,7] , dump.dimension)
+        );
+        console.log(dump.dimension);
+
+      for(const [i,v] of blocks.entries() ){
+      //  console.log(v.pos.value.value);
         
-        //Generate all y indexes within x indexes
-        for(let y_i = 0; y_i < dump.dimension.y; y_i++){
-          dump.blocks[x_i].push([]);
-
-            //Generate z indexes within y indexes
-            for(let z_i = 0; z_i < dump.dimension.z; z_i++){
-              dump.blocks[x_i][y_i].push(
-              findBlock(x_i,y_i,z_i,input.value.blocks.value.value,palette)
-              );
-              console.log('generating 3d arr')
-            }
-
-        }
-
-        
-
       }
-
-      console.log(' 3D structure: ')
-      console.log(dump.blocks)
-
-
-      let sceneParse = [];
-
-      //Generate planes:
-      for(const [xIter, xVal] of dump.blocks.entries()) {
-        console.log(xIter); //Console logs all x arrays
-        for(const [yIter,yVal] of xVal.entries()){
-          console.log(yIter);
-            for(const [zIter, zVal] of yVal.entries()){
-              console.log(zVal);
-        //This will be the logic for rendering:
-        
-        //Surrounding block coord differences: xyz 012
-        const surround = [ [0,1] , [0,-1] , [1,1] , [1,-1] , [2,1] , [2,-1] ];
-
-        console.log('viewing: ');
-        console.log(zVal.name + "@"+xIter+' '+yIter+' '+zIter);
-        
-        if(!zVal.name){continue;}
-
-          for(let k = 0; k < surround.length; k++){
-            //do something
-            
-            if(surround[k][0] == 0 ){ //Looking at x
-
-              let compare = '';
-              try {
-                compare = dump.blocks[ xIter+surround[k][1] ][yIter][zIter];
-              } catch(error){
-                console.log('Render NULL X');
-              }
-
-              if(!compare || compare.cube == false ){
-                //Render for x
-                // blockState.push(
-                //   <TexturePlane x={xIter} y={yIter} z={zIter} rot={[0, Math.PI / 2, 0]}/>
-                // );
-                // console.log('Rendering x @'+surround[k][1]+ ' x'+xIter+' y'+yIter+' z'+zIter);
-                sceneParse.push(
-                  (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter} y={yIter+0.5} z={zIter} col={"red"} rot={[0, Math.PI / 2, 0]}/>
-                  : <TexturePlane x={xIter-1} y={yIter+0.5} z={zIter} col={"pink"} rot={[0, -Math.PI / 2, 0]}/>
-                )
-              } 
-            }
-            
-            if(surround[k][0] == 2){
-              let compare = '';
-              try {
-                compare = dump.blocks[xIter][yIter+surround[k][1]][zIter];
-              } catch(error){
-                console.log('Render NULL Y');
-              }
-
-              if(!compare || compare.cube == false){
-                sceneParse.push(
-                  (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter-0.5} y={yIter} z={zIter} col={"green"} rot={[Math.PI/2,0, 0]}/>
-                  : <TexturePlane x={xIter-0.5} y={yIter+1} z={zIter} col={"blue"} rot={[-Math.PI/2, 0, 0]}/>
-                )
-              }
-
-            }
-            
-            if(surround[k][0] == 1){
-              let compare = '';
-              try {
-                compare = dump.blocks[xIter][yIter][zIter+surround[k][1]];
-              } catch(error){
-                console.log('Render NULL Z');
-              }
-
-              if(!compare || compare.cube == false){
-                sceneParse.push(
-                  (surround[k][1] > 0) ? 
-                  <TexturePlane x={xIter-0.5} y={yIter+0.5} z={zIter+0.5} col={"purple"} rot={[0, 0, Math.PI / 2]}/>
-                  : <TexturePlane x={xIter-0.5} y={yIter} z={zIter+1} col={"cyan"} rot={[Math.PI / 2, 0, 0]}/>
-                )
-              }
-
-            }
-
-
-
-          }
-
-            } // end of z loop
-
-        }
-
-      }
-      console.log('# of Planes:');
-      console.log(sceneParse.length);
-      console.log('\n');
-      setScene(sceneParse);
-
-      // for(const block of input.value.blocks.value.value){
-      //   console.log(block.pos.value.value);
-      //   console.log(block.state.value);
-      // }
-
-      //setScene([<TexturePlane x={3} y={3} z={0} rot={[-Math.PI / 2, 0, 0]}/>]);
-
-
-
+      
     }
 
     
     function handleChange(event) {
-        console.log(event.target.files);
-        // console.log(event.target.files[0]); //file struc
+
         const file = event.target.files[0];
         var reader = new FileReader();
         reader.onload = (e) => {
 
             console.log(e.target.result);
-
 
             var x = nbt.parse(e.target.result, function(error, data) {
               if (error) { throw error; }
@@ -272,7 +146,7 @@ const Upload = () => {
 
   return (
     <Container>
-    Input NBT file <br/>
+    Input NBT file : <br/>
     <input type="file" onChange={handleChange}></input>
     {renderHandler()}
     </Container>

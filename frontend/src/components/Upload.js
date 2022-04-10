@@ -33,7 +33,6 @@ const Upload = () => {
       }
     }
 
-
     function blockStructure(palette, pValue){
       const BlockType = palette[pValue];
 
