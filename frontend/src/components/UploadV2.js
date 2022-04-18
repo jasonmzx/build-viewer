@@ -65,14 +65,14 @@ const Upload = () => {
         -1*(end[1]-start[1]) * (dimension.x+1) * (dimension.z+1) +
         (end[0]-start[0])
       );
-
-
-
     } 
 
 
     function parseNBT(input) {
       console.log('Parsing...');
+
+
+      const palette = input.value.palette.value.value;
 
       let dump = {
         author: "",
@@ -111,14 +111,52 @@ const Upload = () => {
           return b.pos.value.value[1] - a.pos.value.value[1]
         });
 
-        console.log(
-          findBlockIndex([7,9,13] , [14,10,7] , dump.dimension)
-        );
         console.log(dump.dimension);
 
-      for(const [i,v] of blocks.entries() ){
+      for(const [k,v] of blocks.entries() ){
       //  console.log(v.pos.value.value);
+      const blockPos = v.pos.value.value;
+      console.log('Looking at block:');
+      console.log(blockPos);  
+
+      for(let i = 0; i < 3; i++){
+
+        let dim;// 0
+        if ( i== 0 ) {dim = dump.dimension.x;} else if (i == 1) {dim = dump.dimension.y;} else {dim = dump.dimension.z;}
         
+        for(let j = 1; j < 3; j++){ //2 iters
+
+          const modified = blockPos[i] + (-1)**j; //positive or negative
+
+          if(modified < 0 || modified > dim){ //if out of bounds, continue
+            continue;
+          }
+          
+          let neighbour = [...blockPos];
+          neighbour[i] = modified; //Now neighbour is a new valid neighbour
+          
+          let indexDiff = findBlockIndex(blockPos, neighbour, dump.dimension);
+          
+          //Now the neighbour variable turns into the NBT object
+          neighbour = blocks[k+indexDiff];
+          
+          const nbBlockType = neighbour.state.value;
+
+          
+          console.log(neighbour);
+          console.log(nbBlockType);
+
+          
+
+
+
+        }
+
+
+
+
+      }
+
       }
       
     }
