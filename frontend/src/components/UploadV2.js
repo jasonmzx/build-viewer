@@ -74,6 +74,21 @@ const Upload = () => {
 
       const palette = input.value.palette.value.value;
 
+      
+      let airVal = 0;
+      //Find the air's value:
+      for(let i = 0; i < palette.length; i++){
+        if(palette[i].Name.value == "minecraft:air"){
+          airVal = i;
+          break;
+        }
+      }
+
+      console.log("PALETTE! Air's value is "+airVal);
+      console.log(palette);
+      console.log("PALETTE ");
+
+
       let dump = {
         author: "",
         dimension: {x:0,y:0,z:0}, 
@@ -112,6 +127,10 @@ const Upload = () => {
         });
 
         console.log(dump.dimension);
+      
+      let vertices = [];
+      let indices = [];
+      let uv = [];
 
       for(const [k,v] of blocks.entries() ){
       //  console.log(v.pos.value.value);
@@ -136,16 +155,76 @@ const Upload = () => {
           neighbour[i] = modified; //Now neighbour is a new valid neighbour
           
           let indexDiff = findBlockIndex(blockPos, neighbour, dump.dimension);
-          
+
           //Now the neighbour variable turns into the NBT object
           neighbour = blocks[k+indexDiff];
           
           const nbBlockType = neighbour.state.value;
 
+          if(nbBlockType == airVal && v.state.value != airVal){
+            console.log("Valid pairing, let's generate some coords");
+            const nV = neighbour.pos.value.value
+
+            const diff = [blockPos[0]-nV[0] , blockPos[1]-nV[1] , blockPos[2]-nV[2] ];
+
+            uv.push(  0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0);
+
+            const vL = Math.floor(indices.length/6) * 4
+
+            if( diff.includes(-1) ){
+                indices.push(vL, vL+2, vL+1, vL+3, vL+1, vL+2);
+            } else if( diff.includes(1) ){
+              indices.push(vL+0, vL+1, vL+2, vL+3, vL+2, vL+1);
+            }
+
+            if( diff[0] == -1 ) { //If it's -1 in the x direction
+              vertices.push(blockPos[0] , blockPos[1], blockPos[2]);
+              vertices.push(  blockPos[0] , blockPos[1]+1 , blockPos[2]  );
+              vertices.push(  blockPos[0] , blockPos[1] , blockPos[2]+1  );
+              vertices.push(  blockPos[0] , blockPos[1]+1 , blockPos[2]+1 );
+            }
+
+            if( diff[0] == 1 ) {//If it's 1 in the x direction
+              vertices.push(  blockPos[0]+1 , blockPos[1] , blockPos[2]  );
+              vertices.push(  blockPos[0]+1 , blockPos[1]+1 , blockPos[2]  );
+              vertices.push(  blockPos[0]+1 , blockPos[1] , blockPos[2]+1  );
+              vertices.push(  blockPos[0]+1 , blockPos[1]+1 , blockPos[2]+1  );
+            }
+
+            if( diff[1] == -1 ){
+              vertices.push(  blockPos[0] , blockPos[1] , blockPos[2]   );
+              vertices.push(  blockPos[0] , blockPos[1] , blockPos[2]+1  );
+              vertices.push(  blockPos[0]+1 , blockPos[1] , blockPos[2]   );
+              vertices.push(  blockPos[0]+1 , blockPos[1] , blockPos[2]+1   );
+            }
+
+            if(diff[1] == 1){
+              vertices.push(  blockPos[0] , blockPos[1]+1 , blockPos[2]   );
+              vertices.push(  blockPos[0] , blockPos[1]+1 , blockPos[2]+1  );
+              vertices.push(  blockPos[0]+1 , blockPos[1]+1 , blockPos[2]   );
+              vertices.push(  blockPos[0]+1 , blockPos[1]+1 , blockPos[2]+1   );
+            }
+
+            if( diff[2] == -1) {
+              vertices.push(   blockPos[0] , blockPos[1] , blockPos[2]+1   );
+              vertices.push(   blockPos[0] , blockPos[1]+1 , blockPos[2]+1   );
+              vertices.push(   blockPos[0]+1 , blockPos[1] , blockPos[2]+1   );
+              vertices.push(   blockPos[0]+1 , blockPos[1]+1 , blockPos[2]+1   );
+            }
+
+            if( diff[2] == 1) {
+              vertices.push(   blockPos[0] , blockPos[1] , blockPos[2]   );
+              vertices.push(   blockPos[0] , blockPos[1]+1 , blockPos[2]   );
+              vertices.push(   blockPos[0]+1 , blockPos[1] , blockPos[2]  );
+              vertices.push(   blockPos[0]+1 , blockPos[1]+1 , blockPos[2]   );
+            }
+
+
+          }
+
           
           console.log(neighbour);
-          console.log(nbBlockType);
-
+          
           
 
 
@@ -158,7 +237,12 @@ const Upload = () => {
       }
 
       }
-      
+    console.log('vertices');
+    console.log(vertices); 
+    console.log('indices');
+    console.log(indices);
+    console.log('uv');
+    console.log(uv)
     }
 
     

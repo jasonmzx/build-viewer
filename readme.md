@@ -17,3 +17,22 @@ https://github.com/jwtea/three-viewer/blob/20744c53faf7ece7ee1bd19bc593a6322f39d
 Cool codepen:
 
 https://codesandbox.io/s/czhxx?file=/src/App.js (r3f)
+
+Some UV & Indices config for various mesh triangles: (all these directions are from render-init view)
+
+Right:
+
+  var quad_uvs =
+  [
+  0.0, 0.0,
+  0.0, 1.0,
+  1.0, 0.0,
+  1.0, 1.0
+  ];
+  
+var quad_indices =
+  [
+  0, 1, 2, 3, 2, 1
+  ];
+
+Left:
