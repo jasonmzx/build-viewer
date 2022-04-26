@@ -146,11 +146,13 @@ const Upload = () => {
         
         for(let j = 1; j < 3; j++){ //2 iters
 
+          // [0,2,0] , [-1,2,0] , [1,2,0]
           const modified = blockPos[i] + (-1)**j; //positive or negative
 
           if(modified < 0 || modified > dim){ //if out of bounds, continue
             continue;
           }
+          
           
           let neighbour = [...blockPos];
           neighbour[i] = modified; //Now neighbour is a new valid neighbour
@@ -160,6 +162,10 @@ const Upload = () => {
           //Now the neighbour variable turns into the NBT object
           neighbour = blocks[k+indexDiff];
           
+          if(!neighbour){
+            continue;
+          }
+
           const nbBlockType = neighbour.state.value;
 
           if(nbBlockType == airVal && v.state.value != airVal){
@@ -238,7 +244,7 @@ const Upload = () => {
       }
 
       }
-    console.log('vertices');
+    console.log('vertices length: '+vertices.length);
     setVertex(vertices);
     console.log('indices');
     setIndex(indices);
