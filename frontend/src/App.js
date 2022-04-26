@@ -16,6 +16,7 @@ import View from "./components/View.js";
 import Home from "./components/Home.js";
 import Upload from "./components/Upload.js";
 import UploadV2 from "./components/UploadV2.js";
+import UploadV3 from "./components/UploadV3.js";
 import ViewV2 from "./components/ViewV2.js"
 
 import React, { Fragment } from "react";
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/view" element={<View/>} />
       <Route path="/upload" element={<Upload/>}/>
       <Route path="/upload/v2" element={<UploadV2/>}/>
+      <Route path="/upload/v3" element={<UploadV3/>}/>
       <Route path="view/v2" element={<ViewV2/>}/>
       </Routes>
  </Router>
