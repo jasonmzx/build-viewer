@@ -6,7 +6,9 @@ import View from './View';
 import TexturePlane from './TexturePlane';
 
 const Upload = () => {
-    const [scene , setScene] = React.useState([]);
+    const [Vertex , setVertex] = React.useState([]);
+    const [Index, setIndex] = React.useState([]);
+    const [UV, setUV] = React.useState([]);
 
     // handleUpload = (event) => {
     //     console.log('Success!');
@@ -14,9 +16,8 @@ const Upload = () => {
 
     function renderHandler(){
       console.log('[RENDER] calling...')
-      console.log(scene);
 
-      if(scene.length == 0){
+      if(Vertex.length == 0){
         console.log('[RENDER] Denied!')
         return(
           <div>
@@ -28,7 +29,7 @@ const Upload = () => {
         console.log('[RENDER] Received planes:');
 
         return (
-          <View top={scene}/>
+          <View vertices={Vertex} indices={Index} uv={UV}/>
         )
       }
     }
@@ -238,11 +239,11 @@ const Upload = () => {
 
       }
     console.log('vertices');
-    console.log(vertices); 
+    setVertex(vertices);
     console.log('indices');
-    console.log(indices);
+    setIndex(indices);
     console.log('uv');
-    console.log(uv)
+    setUV(uv);
     }
 
     
